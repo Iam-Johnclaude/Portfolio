@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>John Claude T. Bendanillo | IT student, web development and Android</title>
+  <meta name="description" content="Portfolio of John Claude T. Bendanillo, a fourth-year BS Information Technology student at Bukidnon State University focused on web development (Laravel, PHP) and Android.">
+  <meta name="author" content="John Claude T. Bendanillo">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F6F3EC" id="theme-color">
+
+  <!-- Open Graph / social previews.
+       TODO after deploy: make og:image and og:url absolute
+       (e.g. https://YOUR-USERNAME.github.io/YOUR-REPO/images/profile.jpeg). -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="John Claude T. Bendanillo | IT student, web development and Android">
+  <meta property="og:description" content="Fourth-year BS Information Technology student at Bukidnon State University. Laravel, PHP and Android.">
+  <meta property="og:image" content="images/profile.jpeg">
+  <meta property="og:locale" content="en_PH">
+  <meta name="twitter:card" content="summary">
+
+  <!-- Favicon: "JC" in the accent colour (inline SVG, no extra file) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314213D'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='29' letter-spacing='-1' fill='%23E07A1F'%3EJC%3C/text%3E%3C/svg%3E">
+
+  <!-- Theme bootstrap: runs before first paint so there is no light/dark flash.
+       A saved choice wins, otherwise the visitor's system preference. -->
+  <script>
+    (function () {
+      var root = document.documentElement, theme = null;
+      root.classList.add('js');
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      root.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Fonts: Bricolage Grotesque (headings) + Instrument Sans (body), loaded without blocking first paint -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Sans:wght@400..700&display=swap">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Sans:wght@400..700&display=swap">
+  </noscript>
+
+  <style>
+/* ==========================================================================
+   1. DESIGN TOKENS  (edit colours and fonts here)
+   ========================================================================== */
+:root {
+  /* Palette (light) */
+  --paper:   #F6F3EC;   /* page background */
+  --surface: #FFFFFF;   /* photo frame / raised surfaces */
+  --ink:     #14213D;   /* main text and headings */
+  --muted:   #5B6478;   /* secondary text */
+  --line:    #E2DDD0;   /* 1px borders */
+  --accent:  #E07A1F;   /* links, hover, small highlights only (max ~10% of the page) */
+
+  --on-accent: #14213D; /* text that sits ON an accent fill (keeps AA contrast) */
+  --focus:     var(--ink);
+
+  /* Type */
+  --font-display: "Bricolage Grotesque", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-body:    "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Layout */
+  --max: 76rem;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --col-gap: clamp(1rem, 2vw, 1.5rem);
+  --ease: cubic-bezier(.16, 1, .3, 1);   /* exponential ease-out */
+
+  color-scheme: light;
+}
+
+/* Dark mode: same palette, inverted. Accent stays the same. */
+:root[data-theme="dark"] {
+  --paper:   #14213D;
+  --surface: #1A2A4C;
+  --ink:     #F6F3EC;
+  --muted:   #A3ABBE;
+  --line:    #2C3B5F;
+  --focus:   var(--accent);
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 4.5rem;                 /* keeps anchors clear of the sticky nav */
+  scrollbar-color: var(--muted) var(--paper); /* themed scrollbar */
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--accent);
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+a { color: inherit; }
+ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+
+::selection { background: var(--accent); color: var(--on-accent); }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* 12-column grid (mobile: one column) */
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 56rem) {
+  .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+  .offset { grid-column: 4 / -1; }        /* content column that lines up with section titles */
+}
+
+/* Links: ink text, accent underline that fills in on hover */
+.link {
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% var(--u, 2px);
+  padding-bottom: 1px;
+  transition: background-size .25s var(--ease), color .25s var(--ease);
+}
+.link:hover { background-size: 100% 100%; color: var(--on-accent); }
+
+/* Skip link */
+.skip {
+  position: absolute; left: var(--gutter); top: -4rem; z-index: 100;
+  padding: .6rem 1rem; background: var(--ink); color: var(--paper); text-decoration: none;
+}
+.skip:focus { top: .75rem; }
+
+/* ==========================================================================
+   3. NAVIGATION
+   ========================================================================== */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.bar { display: flex; align-items: center; gap: .5rem; min-height: 3.5rem; }
+
+.brand {
+  display: inline-flex; align-items: center; gap: .4rem;
+  margin-right: auto;
+  font: 700 1.25rem/1 var(--font-display);
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+.brand::after { content: ""; width: .4rem; height: .4rem; border-radius: 50%; background: var(--accent); }
+
+.menu-btn, .theme-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.75rem;
+  background: none; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 3px;
+  font: 500 .9375rem/1 var(--font-body);
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s, color .2s;
+}
+.menu-btn { padding: 0 1rem; }
+.theme-btn { width: 2.75rem; }
+.menu-btn:hover, .theme-btn:hover { border-color: var(--ink); }
+
+.ico--sun { display: none; }
+:root[data-theme="dark"] .ico--sun  { display: block; }
+:root[data-theme="dark"] .ico--moon { display: none; }
+
+/* Mobile: links live in a dropdown panel */
+.nav { position: static; }
+.js .menu {
+  display: none;
+  position: absolute; top: 100%; left: 0; right: 0;
+  padding: .25rem var(--gutter) 1.25rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.js .menu.is-open { display: block; }
+.menu a {
+  display: block; padding: .85rem 0;
+  border-top: 1px solid var(--line);
+  font: 500 1.5rem/1.1 var(--font-display);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.menu li:first-child a { border-top: 0; }
+.menu a[aria-current] {
+  text-decoration: underline; text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px; text-underline-offset: .3em;
+}
+html:not(.js) .menu { display: flex; flex-wrap: wrap; gap: .25rem 1rem; padding-bottom: .75rem; }
+html:not(.js) .menu-btn { display: none; }
+html:not(.js) .bar { flex-wrap: wrap; }
+html:not(.js) .menu a { border: 0; font: 500 .9375rem var(--font-body); }
+
+/* Desktop: inline links */
+@media (min-width: 56rem) {
+  .menu-btn { display: none; }
+  .nav { margin-right: .75rem; }
+  .js .menu, .menu {
+    display: flex; position: static;
+    gap: 1.75rem; padding: 0; background: none; border: 0;
+  }
+  .menu a {
+    padding: .5rem 0; border: 0;
+    font: 500 .9375rem/1.2 var(--font-body); letter-spacing: 0;
+    text-decoration: none;
+  }
+  .menu a:hover {
+    text-decoration: underline; text-decoration-color: var(--line);
+    text-decoration-thickness: 2px; text-underline-offset: .5em;
+  }
+  .menu a[aria-current] {
+    text-decoration: underline; text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px; text-underline-offset: .5em;
+  }
+}
+
+/* ==========================================================================
+   4. HERO
+   ========================================================================== */
+.hero { padding-top: clamp(2.5rem, 7vw, 5rem); }
+.hero__grid { display: grid; gap: 2.75rem; }
+
+.hero__name {
+  font-size: clamp(2.6rem, 11.5vw, 6rem);   /* display max 6rem */
+  font-weight: 600;
+  line-height: .96;
+  letter-spacing: -0.025em;   /* the display cut is tight already; -0.035em made letters touch */
+}
+.hero__name .line { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.hero__name .line > span { display: block; }
+.hero__name .soft { color: var(--muted); }
+
+.hero__role {
+  max-width: 34rem;
+  margin-top: 1.75rem;
+  font: 500 clamp(1.15rem, 2.4vw, 1.4rem)/1.3 var(--font-display);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.hero__intro { max-width: 34rem; margin-top: 1rem; font-size: 1.125rem; color: var(--muted); }
+
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  min-height: 2.875rem; padding: .7rem 1.25rem;
+  border: 1px solid var(--ink); border-radius: 3px;
+  font: 600 .9375rem/1 var(--font-body);
+  text-decoration: none;
+  transition: background-color .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+.btn .ico { transition: transform .3s var(--ease); }
+.btn:hover .ico { transform: translate(2px, 2px); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--ghost   { background: transparent; color: var(--ink); }
+.btn--primary:hover, .btn--ghost:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn--ghost:hover .ico { transform: translate(2px, -2px); }
+
+/* Portrait: rounded rectangle with an offset 1px frame behind it */
+.portrait { position: relative; width: min(100% - .75rem, 19rem); }
+.portrait::before {
+  content: ""; position: absolute; inset: 0;
+  transform: translate(.75rem, .75rem);
+  border: 1px solid var(--ink); border-radius: 8px;
+}
+.portrait__frame {
+  display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  aspect-ratio: 4 / 5; overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px;
+}
+/* Initials and photo share one grid cell; the photo covers the initials */
+.portrait__frame > * { grid-area: 1 / 1; }
+.portrait__frame img {
+  width: 100%; height: 100%; min-height: 0;
+  object-fit: cover; object-position: 50% 28%;   /* keeps the face in frame */
+}
+.portrait__initials {
+  display: grid; place-items: center;
+  font: 600 clamp(4rem, 10vw, 6rem)/1 var(--font-display);
+  letter-spacing: -0.05em; color: var(--muted);
+}
+
+/* Facts strip: sits between two hairlines */
+.facts {
+  display: grid; margin-top: clamp(3rem, 7vw, 5rem);
+  border-top: 1px solid var(--line);
+}
+.facts > div { padding-block: 1.1rem; border-bottom: 1px solid var(--line); }
+.facts dt { font-size: .8125rem; letter-spacing: .02em; color: var(--muted); }
+.facts dd { margin-top: .15rem; overflow-wrap: anywhere; }
+
+@media (min-width: 40rem) {
+  .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--col-gap); }
+  .facts > div { border-bottom: 0; }
+}
+@media (min-width: 56rem) {
+  .hero__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: start; }
+  .hero__text { grid-column: 1 / 9; }
+  .portrait   { grid-column: 9 / 13; width: min(100% - .75rem, 22rem); margin-top: 3.5rem; justify-self: end; }
+}
+
+/* ==========================================================================
+   5. SECTION SCAFFOLD  (number + title)
+   ========================================================================== */
+.section { padding-block: clamp(4rem, 9vw, 7.5rem); border-top: 1px solid var(--line); }
+
+.head { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: clamp(2rem, 5vw, 3.75rem); }
+.head__num {
+  padding-top: .55rem;
+  font: 400 .9375rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums; color: var(--muted);
+}
+.head__title { font-size: clamp(2.1rem, 7vw, 4.5rem); letter-spacing: -0.035em; }
+
+@media (min-width: 56rem) {
+  .head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: baseline; }
+  .head__num {
+    grid-column: 1 / 4; padding: 0;
+    font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; letter-spacing: -0.04em;
+  }
+  .head__title { grid-column: 4 / -1; }
+}
+
+/* ==========================================================================
+   6. ABOUT
+   ========================================================================== */
+.about { max-width: 42rem; }
+.about__lead {
+  margin-bottom: 1.5rem;
+  font: 500 clamp(1.6rem, 3.4vw, 2.4rem)/1.15 var(--font-display);
+  letter-spacing: -0.025em;
+}
+.about p:not(.about__lead) { color: var(--muted); }
+
+/* ==========================================================================
+   7. SKILLS  (grouped rows, no progress bars)
+   ========================================================================== */
+.skills { border-bottom: 1px solid var(--line); }
+.skills__row { row-gap: .6rem; padding-block: 1.5rem; border-top: 1px solid var(--line); }
+.skills dt { font-size: .9375rem; font-weight: 600; color: var(--muted); }
+.skills dd { min-width: 0; }
+@media (min-width: 56rem) {
+  .skills dt { grid-column: 1 / 4; padding-top: .4rem; }
+  .skills dd { grid-column: 4 / -1; }
+}
+.inline {
+  display: flex; flex-wrap: wrap; gap: .3rem 0;
+  font: 500 clamp(1.15rem, 2.4vw, 1.5rem)/1.3 var(--font-display);
+  letter-spacing: -0.015em;
+}
+.inline li:not(:last-child)::after { content: "/"; margin-inline: .6em; color: var(--muted); font-weight: 400; }
+
+/* ==========================================================================
+   8. PROJECTS
+   ========================================================================== */
+.projects { border-bottom: 1px solid var(--line); }
+.project { display: grid; gap: 1.25rem; padding-block: 2.25rem; border-top: 1px solid var(--line); }
+
+.project__idx {
+  font: 400 1.25rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums; color: var(--muted);
+}
+.project__title { font-size: clamp(1.75rem, 4vw, 2.75rem); letter-spacing: -0.03em; }
+.project__sub { margin-top: .4rem; font-size: 1.0625rem; color: var(--muted); }
+.project__desc { max-width: 34rem; margin-top: .9rem; }
+
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.25rem; }
+.tags li {
+  padding: .3rem .7rem;
+  border: 1px solid var(--line); border-radius: 2px;
+  font-size: .8125rem; color: var(--muted);
+}
+
+.project__meta { display: grid; gap: .6rem; align-content: start; }
+.project__meta > div { display: grid; grid-template-columns: 4rem minmax(0, 1fr); align-items: baseline; gap: .5rem; }
+.project__meta dt { font-size: .8125rem; color: var(--muted); }
+.project__meta dd { font-size: .9375rem; }
+
+.role {
+  display: inline-block; padding: .3rem .75rem;
+  border: 1px solid var(--ink); border-radius: 2px;
+  font-size: .8125rem; font-weight: 600;
+}
+.role--own { background: var(--ink); color: var(--paper); }
+.note { margin-left: .3rem; font-size: .8125rem; color: var(--muted); }
+
+@media (min-width: 56rem) {
+  .project { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); padding-block: 2.75rem; }
+  .project__idx  { grid-column: 1 / 4; padding-top: .6rem; }
+  .project__main { grid-column: 4 / 10; }
+  .project__meta { grid-column: 10 / 13; gap: 1rem; }
+  .project__meta > div { display: block; }
+  .project__meta dd { margin-top: .25rem; }
+}
+
+/* ==========================================================================
+   9. CERTIFICATIONS  (timeline)
+   ========================================================================== */
+.tl { position: relative; padding: 0 0 2.5rem 1.5rem; border-left: 1px solid var(--line); }
+.tl:last-child { padding-bottom: 0; }
+.tl::before, .tl__body::before {
+  content: ""; position: absolute; left: -.375rem; top: .3rem;
+  width: .75rem; height: .75rem; border-radius: 50%;
+  background: var(--paper); border: 2px solid var(--dot, var(--ink));
+}
+.tl:last-child { --dot: var(--accent); }   /* the latest certification gets the accent marker */
+.tl:last-child::before, .tl:last-child .tl__body::before { background: var(--dot); }
+.tl__date {
+  display: block; margin-bottom: .4rem;
+  font-size: .9375rem; font-variant-numeric: tabular-nums; color: var(--muted);
+}
+.tl h3 { font-size: clamp(1.25rem, 2.8vw, 1.75rem); letter-spacing: -0.025em; line-height: 1.12; }
+.tl p { margin-top: .5rem; color: var(--muted); }
+.tl .tl__hours { margin-top: .25rem; font-size: .9375rem; }
+
+@media (min-width: 56rem) {
+  .tl {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap);
+    padding: 0; border-left: 0;
+  }
+  .tl::before { display: none; }
+  .tl__date { grid-column: 1 / 4; margin: 0; padding-top: .3rem; font-size: 1rem; }
+  .tl__body {
+    position: relative; grid-column: 4 / -1;
+    padding: 0 0 3.25rem 2rem; border-left: 1px solid var(--line);
+  }
+  .tl:last-child .tl__body { padding-bottom: 0; }
+  .tl__body::before { top: .55rem; }
+}
+
+/* ==========================================================================
+   10. LANGUAGES  (leader-line rows)
+   ========================================================================== */
+.langs li { display: flex; align-items: baseline; gap: 1rem; padding-block: 1rem; }
+.langs li + li { border-top: 1px solid var(--line); }
+.langs__name { font: 600 clamp(1.5rem, 3.4vw, 2.25rem)/1.1 var(--font-display); letter-spacing: -0.025em; }
+.langs__rule { flex: 1; min-width: 1rem; border-bottom: 2px dotted var(--line); transform: translateY(-.3em); }
+.langs__level { color: var(--muted); }
+
+/* ==========================================================================
+   11. CONTACT + FOOTER
+   ========================================================================== */
+.contact__mail {
+  --u: .1em;
+  display: inline;
+  font: 600 clamp(1.05rem, 4.6vw, 2.75rem)/1.2 var(--font-display);
+  letter-spacing: -0.03em; overflow-wrap: anywhere;
+}
+.contact__list { margin-top: 2.25rem; }
+.contact__list li { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; padding-block: .9rem; border-top: 1px solid var(--line); }
+.contact__list li:last-child { border-bottom: 1px solid var(--line); }
+.contact__label { min-width: 5.5rem; color: var(--muted); }
+
+.site-footer { padding-block: 2rem; border-top: 1px solid var(--line); font-size: .875rem; color: var(--muted); }
+.site-footer .link { color: var(--ink); }
+.site-footer .link:hover { color: var(--on-accent); }
+.footer__row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem 1.5rem; }
+
+/* ==========================================================================
+   12. MOTION  (subtle; skipped entirely for prefers-reduced-motion)
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  /* Scroll reveal: fade + slide up. Content stays visible without JS. */
+  .js .reveal {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+  .js .reveal.is-in { opacity: 1; transform: none; }
+
+  /* Hero name: each line rises out of a mask */
+  .js .hero__name .line > span {
+    transform: translateY(105%);
+    animation: rise 1s var(--ease) forwards;
+    animation-delay: calc(var(--i, 0) * 110ms + 80ms);
+  }
+  @keyframes rise { to { transform: none; } }
+}
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="#top" aria-label="John Claude T. Bendanillo, back to top">JC</a>
+
+      <nav class="nav" aria-label="Primary">
+        <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="site-menu">
+          <span id="menu-btn-label">Menu</span>
+        </button>
+        <ul class="menu" id="site-menu">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#certifications">Certifications</a></li>
+          <li><a href="#languages">Languages</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-btn" type="button" id="theme-toggle" aria-label="Dark mode" aria-pressed="false">
+        <!-- moon: shown in light mode -->
+        <svg class="ico ico--moon" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16.5 11.5A7 7 0 1 1 8.5 3.5a5.5 5.5 0 0 0 8 8z"/></svg>
+        <!-- sun: shown in dark mode -->
+        <svg class="ico ico--sun" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.3 4.3l1.4 1.4M14.3 14.3l1.4 1.4M4.3 15.7l1.4-1.4M14.3 5.7l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div class="hero__grid">
+
+          <div class="hero__text">
+            <h1 class="hero__name" id="hero-title">
+              <span class="line" style="--i:0"><span>John Claude</span></span>
+              <span class="line" style="--i:1"><span><span class="soft">T.</span> Bendanillo</span></span>
+            </h1>
+
+            <p class="hero__role reveal" style="--i:3">IT student focused on web development (Laravel, PHP) and Android</p>
+            <p class="hero__intro reveal" style="--i:4">
+              I'm a fourth-year BS Information Technology student at Bukidnon State University, based in Valencia City.
+              I learn by building, mostly with Laravel and PHP on the web and Java on Android.
+            </p>
+
+            <div class="actions reveal" style="--i:5">
+              <a class="btn btn--primary" href="#projects">
+                View projects
+                <svg class="ico" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M10 3v14M4 11l6 6 6-6"/></svg>
+              </a>
+              <a class="btn btn--ghost" href="mailto:johnclaudebendanillo123@gmail.com">
+                Email me
+                <svg class="ico" viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M5 15L15 5M7 5h8v8"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Profile photo lives at images/profile.jpeg (any size; it is cropped to 4:5 around the face). -->
+          <figure class="portrait reveal" style="--i:2">
+            <div class="portrait__frame">
+              <span class="portrait__initials" aria-hidden="true">JC</span>
+              <img src="images/profile.jpeg" width="1600" height="1058" fetchpriority="high" decoding="async"
+                   alt="John Claude T. Bendanillo smiling with two thumbs up, wearing a white uniform and a Bukidnon State University lanyard">
+            </div>
+          </figure>
+
+        </div>
+
+        <dl class="facts reveal" style="--i:6">
+          <div><dt>School</dt><dd>Bukidnon State University</dd></div>
+          <div><dt>Location</dt><dd>Valencia City, Bukidnon</dd></div>
+          <div><dt>Email</dt><dd><a class="link" href="mailto:johnclaudebendanillo123@gmail.com">johnclaudebendanillo123@gmail.com</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ==================== 01 ABOUT ==================== -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="head__num" aria-hidden="true">01</span>
+          <h2 class="head__title" id="about-title">About</h2>
+        </div>
+
+        <div class="grid">
+          <div class="offset about reveal">
+            <p class="about__lead">I learn best by building.</p>
+            <p>
+              My focus is web development with Laravel and PHP, along with Android apps in Java.
+              Three of my four projects here were group work, so I have learned as much about teamwork,
+              communication and adapting to other people's code as I have about any framework.
+              I'm a fourth-year student, and the projects below say plainly which ones I built myself and
+              which ones I contributed to.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 02 SKILLS ==================== -->
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="head__num" aria-hidden="true">02</span>
+          <h2 class="head__title" id="skills-title">Skills</h2>
+        </div>
+
+        <dl class="skills">
+          <div class="skills__row grid reveal">
+            <dt>Development</dt>
+            <dd><ul class="inline"><li>Laravel (PHP)</li><li>HTML</li><li>CSS</li></ul></dd>
+          </div>
+          <div class="skills__row grid reveal">
+            <dt>Design and Editing</dt>
+            <dd><ul class="inline"><li>Canva</li><li>Basic editing</li></ul></dd>
+          </div>
+          <div class="skills__row grid reveal">
+            <dt>Office Tools</dt>
+            <dd><ul class="inline"><li>Excel</li><li>Word</li><li>Google Docs</li></ul></dd>
+          </div>
+          <div class="skills__row grid reveal">
+            <dt>AI Tools</dt>
+            <dd><ul class="inline"><li>ChatGPT</li><li>Claude</li><li>Gemini</li></ul></dd>
+          </div>
+          <div class="skills__row grid reveal">
+            <dt>Soft skills</dt>
+            <dd><ul class="inline"><li>Problem Solving</li><li>Teamwork and Collaboration</li><li>Adaptability</li><li>Communication</li><li>Continuous Learning</li></ul></dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ==================== 03 PROJECTS ==================== -->
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="head__num" aria-hidden="true">03</span>
+          <h2 class="head__title" id="projects-title">Projects</h2>
+        </div>
+
+        <!-- The GitHub links below point to the profile for now.
+             Replace each href with the repository URL when it is ready. -->
+        <ol class="projects">
+
+          <li class="project reveal">
+            <span class="project__idx" aria-hidden="true">1/4</span>
+            <div class="project__main">
+              <h3 class="project__title">Jam's Gadget</h3>
+              <p class="project__sub">Inventory App</p>
+              <p class="project__desc">An Android inventory app that I built on my own.</p>
+              <ul class="tags" aria-label="Tech stack"><li>Java</li><li>Android Studio</li></ul>
+            </div>
+            <dl class="project__meta">
+              <div><dt>Role</dt><dd><span class="role role--own">Developer</span> <span class="note">Built by me</span></dd></div>
+              <div><dt>Type</dt><dd>Academic project</dd></div>
+              <div><dt>Code</dt><dd><a class="link" href="https://github.com/Iam-Johnclaude" data-repo-placeholder>GitHub</a></dd></div>
+            </dl>
+          </li>
+
+          <li class="project reveal">
+            <span class="project__idx" aria-hidden="true">2/4</span>
+            <div class="project__main">
+              <h3 class="project__title">CPAG Research Archive</h3>
+              <p class="project__desc">A team-built full-stack app for organizing and retrieving graduate research documents, with search and structured metadata management.</p>
+              <ul class="tags" aria-label="Tech stack"><li>MongoDB</li><li>Express.js</li><li>React</li><li>Node.js</li><li>MERN</li></ul>
+            </div>
+            <dl class="project__meta">
+              <div><dt>Role</dt><dd><span class="role">Contributor</span> <span class="note">Team project</span></dd></div>
+              <div><dt>Type</dt><dd>Academic project</dd></div>
+              <div><dt>Code</dt><dd><a class="link" href="https://github.com/Iam-Johnclaude" data-repo-placeholder>GitHub</a></dd></div>
+            </dl>
+          </li>
+
+          <li class="project reveal">
+            <span class="project__idx" aria-hidden="true">3/4</span>
+            <div class="project__main">
+              <h3 class="project__title">PayMonitor</h3>
+              <p class="project__sub">Lending Management SaaS</p>
+              <p class="project__desc">A team-built lending management SaaS on Laravel and MySQL.</p>
+              <ul class="tags" aria-label="Tech stack"><li>Laravel</li><li>MySQL</li><li>stancl/tenancy</li><li>Spatie</li><li>DomPDF</li></ul>
+            </div>
+            <dl class="project__meta">
+              <div><dt>Role</dt><dd><span class="role">Contributor</span> <span class="note">Team project</span></dd></div>
+              <div><dt>Type</dt><dd>Academic project</dd></div>
+              <div><dt>Code</dt><dd><a class="link" href="https://github.com/Iam-Johnclaude" data-repo-placeholder>GitHub</a></dd></div>
+            </dl>
+          </li>
+
+          <li class="project reveal">
+            <span class="project__idx" aria-hidden="true">4/4</span>
+            <div class="project__main">
+              <h3 class="project__title">SafeRide</h3>
+              <p class="project__sub">AI Helmet Detection System</p>
+              <p class="project__desc">A team-built capstone: an AI-based helmet detection system built around YOLOv11, OpenCV and PyTorch.</p>
+              <ul class="tags" aria-label="Tech stack"><li>YOLOv11</li><li>OpenCV</li><li>PyTorch</li><li>Django REST</li><li>React + TypeScript</li></ul>
+            </div>
+            <dl class="project__meta">
+              <div><dt>Role</dt><dd><span class="role">Contributor</span> <span class="note">Team project</span></dd></div>
+              <div><dt>Type</dt><dd>Capstone project</dd></div>
+              <div><dt>Code</dt><dd><a class="link" href="https://github.com/Iam-Johnclaude" data-repo-placeholder>GitHub</a></dd></div>
+            </dl>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ==================== 04 CERTIFICATIONS ==================== -->
+    <section class="section" id="certifications" aria-labelledby="certs-title">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="head__num" aria-hidden="true">04</span>
+          <h2 class="head__title" id="certs-title">Certifications</h2>
+        </div>
+
+        <ol class="timeline">
+          <li class="tl reveal">
+            <time class="tl__date" datetime="2025-05-16">May 16, 2025</time>
+            <div class="tl__body">
+              <h3>CCNA: Introduction to Networks</h3>
+              <p>Cisco Networking Academy with Bukidnon State University</p>
+              <p class="tl__hours">70 hours</p>
+            </div>
+          </li>
+          <li class="tl reveal">
+            <time class="tl__date" datetime="2025-12-23">Dec 23, 2025</time>
+            <div class="tl__body">
+              <h3>CCNA: Switching, Routing, and Wireless Essentials</h3>
+              <p>Cisco Networking Academy with Bukidnon State University</p>
+              <p class="tl__hours">70 hours</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ==================== 06 CONTACT ==================== -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="head__num" aria-hidden="true">06</span>
+          <h2 class="head__title" id="contact-title">Contact</h2>
+        </div>
+
+        <div class="grid">
+          <div class="offset contact reveal">
+            <a class="contact__mail link" href="mailto:johnclaudebendanillo123@gmail.com">johnclaudebendanillo123@gmail.com</a>
+            <ul class="contact__list">
+              <li><span class="contact__label">GitHub</span><a class="link" href="https://github.com/Iam-Johnclaude" rel="me">github.com/Iam-Johnclaude</a></li>
+              <li><span class="contact__label">Based in</span><span>Valencia City, Bukidnon</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer">
+    <div class="wrap footer__row">
+      <p>&copy; <span id="year">2026</span> John Claude T. Bendanillo</p>
+      <a class="link" href="#top">Back to top</a>
+    </div>
+  </footer>
+
+  <script>
+/* ==========================================================================
+   SCRIPT: theme toggle, mobile menu, active nav link, scroll reveal, footer year
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var root = document.documentElement;
+  var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
+  var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
+
+  /* ---------- 1. Theme toggle (light / dark) ---------- */
+  var themeBtn  = $('#theme-toggle');
+  var themeMeta = $('#theme-color');
+  var THEME_COLORS = { light: '#F6F3EC', dark: '#14213D' };
+
+  function hasSavedTheme() {
+    try { var t = localStorage.getItem('theme'); return t === 'light' || t === 'dark'; }
+    catch (e) { return false; }
+  }
+  function applyTheme(theme, save) {
+    root.setAttribute('data-theme', theme);
+    themeBtn.setAttribute('aria-pressed', String(theme === 'dark'));
+    themeMeta.setAttribute('content', THEME_COLORS[theme]);
+    if (save) { try { localStorage.setItem('theme', theme); } catch (e) {} }
+  }
+  applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light', false);
+
+  themeBtn.addEventListener('click', function () {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+  });
+
+  // Follow the system setting until the visitor makes their own choice
+  var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var onSystemChange = function (e) { if (!hasSavedTheme()) applyTheme(e.matches ? 'dark' : 'light', false); };
+  if (systemDark.addEventListener) systemDark.addEventListener('change', onSystemChange);
+
+
+  /* ---------- 2. Mobile menu ---------- */
+  var menuBtn   = $('#menu-btn');
+  var menuLabel = $('#menu-btn-label');
+  var menu      = $('#site-menu');
+  var desktop   = window.matchMedia('(min-width: 56rem)');
+
+  function setMenu(open) {
+    menu.classList.toggle('is-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuLabel.textContent = open ? 'Close' : 'Menu';
+  }
+  menuBtn.addEventListener('click', function () {
+    setMenu(menuBtn.getAttribute('aria-expanded') !== 'true');
+  });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      menuBtn.focus();
+    }
+  });
+  if (desktop.addEventListener) desktop.addEventListener('change', function (e) { if (e.matches) setMenu(false); });
+
+
+  /* ---------- 3. Active section highlight in the nav ---------- */
+  var navLinks = $$('.menu a');
+  var sections = navLinks.map(function (a) { return $(a.getAttribute('href')); }).filter(Boolean);
+  var ticking = false;
+
+  function updateActive() {
+    ticking = false;
+    var line = window.innerHeight * 0.35;   // a section is "current" once its top passes this line
+    var current = null;
+    sections.forEach(function (s) { if (s.getBoundingClientRect().top <= line) current = s.id; });
+    var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    if (atBottom && sections.length) current = sections[sections.length - 1].id;
+
+    navLinks.forEach(function (a) {
+      if (a.getAttribute('href') === '#' + current) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  function onScroll() {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(updateActive); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  updateActive();
+
+
+  /* ---------- 4. Scroll reveal (fade + slide) ---------- */
+  var reveals = $$('.reveal');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+
+
+  /* ---------- 5. Profile photo fallback ----------
+     If images/profile.jpeg is missing, hide the broken image and show the "JC" initials. */
+  var photo = $('.portrait__frame img');
+  if (photo) {
+    var hidePhoto = function () { photo.hidden = true; };
+    photo.addEventListener('error', hidePhoto);
+    if (photo.complete && photo.naturalWidth === 0) hidePhoto();
+  }
+
+
+  /* ---------- 6. Footer year ---------- */
+  var year = $('#year');
+  if (year) year.textContent = String(new Date().getFullYear());
+})();
+  </script>
+</body>
+</html>
